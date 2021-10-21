@@ -27,7 +27,7 @@ export default {
   data(){
     return{
       pageTitle       : "Wheel Spinner",
-      wheelSize       : 650,
+      wheelSize       : 640,
       btnColor        : "",
       btnText         : "SPIN!",
       lineWidth       : 8,

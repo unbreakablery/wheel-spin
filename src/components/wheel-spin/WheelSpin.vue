@@ -51,8 +51,11 @@
 				wheelPower: 1,
 				wheelSpinning: false,
 				WinWheelOptions: {
+					drawMode: 'image',
+					drawText: false,
+					wheelmage: null,
 					textFontSize: 16,
-					outterRadius: 660,
+					outterRadius: 650,
 					innerRadius: 25,
 					lineWidth: 8,
 					animation: {
@@ -83,25 +86,9 @@
 			},
 			startSpin() {
 				if (this.wheelSpinning === false) {
-					this.theWheel.startAnimation()
-					this.wheelSpinning = true
-					this.theWheel = new Winwheel.Winwheel({
-						...this.WinWheelOptions,
-						textOrientation: this.textOrientation,
-						textAlignment: this.textAlignment,
-						textMargin: this.textMargin,
-						numSegments: this.segments.length,
-						segments: this.segments,
-						animation: {
-							type: 'spinToStop',
-							easing: 'Power4.easeInOut',
-							duration: this.duration,
-							spins: this.spin,
-							callbackFinished: this.onFinishSpin
-						}
-					})
 					// this.theWheel.animation.stopAngle = this.theWheel.getRandomForSegment(2)
 					this.theWheel.startAnimation()
+					this.wheelSpinning = true
 				}
 			},
 			resetWheel() {
@@ -112,8 +99,28 @@
 					textAlignment: this.textAlignment,
 					textMargin: this.textMargin,
 					numSegments: this.segments.length,
-					segments: this.segments
+					segments: this.segments,
+					animation: {
+						type: 'spinToStop',
+						easing: 'Power4.easeInOut',
+						duration: this.duration,
+						spins: this.spin,
+						callbackFinished: this.onFinishSpin
+					}
 				})
+
+				// Set background image
+				let loadedImg = new Image()
+				let _self = this
+				// Create callback to execute once the image has finished loading.
+				loadedImg.onload = function()
+				{
+					_self.theWheel.wheelImage = loadedImg    // Make wheelImage equal the loaded image object.
+					_self.theWheel.draw()                    // Also call draw function to render the wheel.
+				}
+				// Set the image source, once complete this will trigger the onLoad callback (above).
+				loadedImg.src = "wheel.png"
+
 				if (this.wheelSpinning) {
 					this.theWheel.stopAnimation(false) // Stop the animation, false as param so does not call callback function.
 				}
